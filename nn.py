@@ -1,7 +1,6 @@
 import numpy
 import pandas 
 import matplotlib.pyplot as plt
-from tqdm import tqdm 
 
 class NN:
     def __init__(self, data, labels):
@@ -23,6 +22,7 @@ class NN:
         self.b1 = numpy.zeros((self.hidden_layer, 1))
         self.b2 = numpy.zeros((self.output_layer, 1))
 
+        # Initialize the Z and A values for forward propagation
         self.Z1 = None
         self.A1 = None
         self.Z2 = None
@@ -34,7 +34,8 @@ class NN:
         # Initialize the number of epochs
         self.epochs = 1500
 
-        self.accuracies = []  # Add this line to store accuracies
+        # Initialize the accuracies list 
+        self.accuracies = []  
         
     def forward_prop(self):
         # Input layer to hidden layer
@@ -46,13 +47,12 @@ class NN:
         self.A2 = self.softmax(self.Z2)        
 
     def ReLU(self, Z1):
-        return numpy.maximum(Z1,0)
+        return numpy.maximum(Z1,0) 
     
     def ReLU_derivative(self, dZ1):
         return dZ1 > 0
 
     def softmax(self, Z):
-        # Subtract the maximum value for numerical stability
         Z = Z - numpy.max(Z, axis=0, keepdims=True)
         exp_values = numpy.exp(Z)
         return exp_values / numpy.sum(exp_values, axis=0, keepdims=True)
@@ -64,9 +64,13 @@ class NN:
 
     def backward_prop(self):
         one_hot_labels = self.one_hot(self.labels)
+
+        # From output layer to hidden layer
         dZ2 = self.A2 - one_hot_labels
         dW2 = 1/m * numpy.dot(dZ2, self.A1.T)
         db2 = 1/m * numpy.sum(dZ2)
+
+        # From hidden layer to input layer
         dZ1 = self.W2.T.dot(dZ2) * self.ReLU_derivative(self.Z1)
         dW1 = 1/m * numpy.dot(dZ1, self.input_data.T)
         db1 = 1/m * numpy.sum(dZ1)
@@ -78,7 +82,6 @@ class NN:
         self.b1 = self.b1 - self.learning_rate * db1
         self.W2 = self.W2 - self.learning_rate * dW2
         self.b2 = self.b2 - self.learning_rate * db2
-
 
     def get_accuracy(self, predictions):
         return numpy.sum(predictions == self.labels) / self.labels.size
@@ -130,7 +133,7 @@ class NN:
         # Load and preprocess test data
         data = pandas.read_csv('MNIST_CSV/mnist_test.csv')
         data = numpy.array(data)
-        data_T = data.T
+        data_T = data.T # Transpose the data
         
         # Split into labels and pixels
         test_labels = data_T[0]
@@ -168,6 +171,8 @@ class NN:
         plt.show()
         plt.close()
 
+    # This function allows the user to enter an index of an image in the training set and the model will make a prediction 
+    # It will display the image and the prediction and compare it to the actual label
     def one_try(self):
         while True:
             i = input("Enter the index of the image you want to predict (0-5999) or 'quit' to exit: ")
@@ -211,7 +216,7 @@ if __name__ == '__main__':
     data = numpy.array(data)
     m, n = data.shape
 
-    data_T = data.T
+    data_T = data.T # Transpose the data so that the rows are the features and the columns are the examples
 
     labels = data_T[0] # 5999 labels
     pixels = data_T[1:n] # 5999 images of 784 pixels each (28x28)
