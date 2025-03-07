@@ -5,9 +5,11 @@ from tqdm import tqdm
 
 class NN:
     def __init__(self, data, labels):
-        # Input data
+       
+       # Input data
         self.input_data = data
 
+        # Labels
         self.labels = labels
 
         # Initialize the layers
@@ -216,7 +218,7 @@ if __name__ == '__main__':
     pixels = pixels / 255.0 # Normalize pixel values to be between 0 and 1
 
     nn = NN(pixels, labels)
-    nn.train()
-    nn.test_set()  
-    nn.one_try()
+    nn.train() # Train the model
+    nn.test_set()  # Test the model
+    nn.one_try() # Make predictions on a single image of the training set
 
