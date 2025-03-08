@@ -2,5 +2,6 @@
 # Ignore virtual environment
 venv/
 
-# Ignore the mnist csv for now
+# Ignore the mnist csv files
+# These files are used only on nn.py (are not used on nn-tensor.py or nn-torch.py)
 MNIST_CSV/
