@@ -1,4 +1,4 @@
-# MNIST Neural Network in NumPy
+# MNIST Neural Network with NumPy
 
 This project implements a simple fully connected neural network to classify handwritten digits from the MNIST dataset using only NumPy (without TensorFlow/Keras).
 
